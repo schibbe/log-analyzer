@@ -75,6 +75,25 @@ The goal is to gradually learn:
 
 ---
 
+## Roadmap
+
+This project is intentionally developed in small, incremental steps to better understand how log analysis works in practice.
+
+- [x] Create project
+- [x] Write initial documentation
+- [ ] Read Linux authentication logs
+- [ ] Parse log entries
+- [ ] Detect failed SSH logins
+- [ ] Detect successful SSH logins
+- [ ] Count source IP addresses
+- [ ] Generate login statistics
+- [ ] Detect brute-force attempts
+- [ ] Export results to CSV
+- [ ] Generate HTML reports
+- [ ] Build a Streamlit web interface
+
+---
+
 ## Disclaimer
 
 This project is intended for educational purposes only.
