@@ -3,6 +3,7 @@ log_data = open("data/auth.log", "r")
 failed_login_count = 0
 ip_counts = {}
 user_counts = {}
+ip_users = {}
 
 for line in log_data:
     if "Failed password" in line:
@@ -21,6 +22,14 @@ for line in log_data:
         else:
             user_counts[user] = 1
 
+        if ip not in ip_users:
+            ip_users[ip] = {}
+
+        if user in ip_users[ip]:
+            ip_users[ip][user] = ip_users[ip][user] + 1
+        else:
+            ip_users[ip][user] = 1
+
 print(f"Failed login attempts: {failed_login_count}")
 print()
 
@@ -32,9 +41,21 @@ for ip in ip_counts:
 
 print()
 print("Target Accounts")
-print("---------------")
+print("----------------")
 
 for user in user_counts:
     print(f"{user} -> {user_counts[user]} attempts")
+
+print()
+print("Attack Relationships")
+print("--------------------")
+
+for ip in ip_users:
+    print(ip)
+
+    for user in ip_users[ip]:
+        print(f"  {user} -> {ip_users[ip][user]} attempts")
+
+    print()
 
 log_data.close()
