@@ -1,0 +1,10 @@
+Jul 16 08:15:03 server sshd[1024]: Accepted password for simon from 192.168.1.5 port 54821 ssh2
+Jul 16 08:16:41 server sshd[1028]: Accepted password for ubuntu from 192.168.1.8 port 54832 ssh2
+Jul 16 08:18:10 server sshd[1035]: Failed password for root from 185.220.101.15 port 42311 ssh2
+Jul 16 08:18:16 server sshd[1036]: Failed password for root from 185.220.101.15 port 42315 ssh2
+Jul 16 08:18:22 server sshd[1037]: Failed password for invalid user admin from 45.67.89.123 port 50122 ssh2
+Jul 16 08:19:03 server sshd[1040]: Failed password for invalid user test from 91.240.118.12 port 33781 ssh2
+Jul 16 08:20:44 server sshd[1048]: Accepted password for backup from 192.168.1.20 port 55211 ssh2
+Jul 16 08:21:15 server sshd[1050]: Failed password for root from 185.220.101.15 port 42344 ssh2
+Jul 16 08:22:40 server sshd[1055]: Failed password for invalid user guest from 203.0.113.77 port 61234 ssh2
+Jul 16 08:24:02 server sshd[1060]: Accepted password for simon from 192.168.1.5 port 54855 ssh2
