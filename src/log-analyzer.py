@@ -1,9 +1,7 @@
 log_data = open("data/auth.log", "r")
 
-log_content = log_data.read()
-
-length = len(log_content)
-
-print(length)
+for line in log_data:
+    if "Failed password" in line:
+        print(line)
 
 log_data.close()
