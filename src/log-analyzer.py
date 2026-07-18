@@ -7,18 +7,18 @@ ip_users = {}
 
 for line in log_data:
     if "Failed password" in line:
-        failed_login_count = failed_login_count + 1
+        failed_login_count += 1
 
         ip = line.split("from ")[1].split(" ")[0]
         user = line.split("for ")[1].split("from ")[0].strip()
 
         if ip in ip_counts:
-            ip_counts[ip] = ip_counts[ip] + 1
+            ip_counts[ip] += 1
         else:
             ip_counts[ip] = 1
 
         if user in user_counts:
-            user_counts[user] = user_counts[user] + 1
+            user_counts[user] += 1
         else:
             user_counts[user] = 1
 
@@ -26,7 +26,7 @@ for line in log_data:
             ip_users[ip] = {}
 
         if user in ip_users[ip]:
-            ip_users[ip][user] = ip_users[ip][user] + 1
+            ip_users[ip][user] += 1
         else:
             ip_users[ip][user] = 1
 
@@ -36,25 +36,27 @@ print()
 print("Attacker Statistics")
 print("-------------------")
 
-for ip in ip_counts:
-    print(f"{ip} -> {ip_counts[ip]} attempts")
+for ip, count in ip_counts.items():
+    print(f"{ip} -> {count} attempts")
 
 print()
+
 print("Target Accounts")
 print("----------------")
 
-for user in user_counts:
-    print(f"{user} -> {user_counts[user]} attempts")
+for user, count in user_counts.items():
+    print(f"{user} -> {count} attempts")
 
 print()
+
 print("Attack Relationships")
 print("--------------------")
 
 for ip in ip_users:
     print(ip)
 
-    for user in ip_users[ip]:
-        print(f"  {user} -> {ip_users[ip][user]} attempts")
+    for user, count in ip_users[ip].items():
+        print(f"  {user} -> {count} attempts")
 
     print()
 
