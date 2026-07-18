@@ -30,14 +30,25 @@ for line in log_data:
         else:
             ip_users[ip][user] = 1
 
+
 print(f"Failed login attempts: {failed_login_count}")
 print()
 
-print("Attacker Statistics")
-print("-------------------")
+# -------- NEW --------
 
-for ip, count in ip_counts.items():
+sorted_ips = sorted(
+    ip_counts.items(),
+    key=lambda item: item[1],
+    reverse=True
+)
+
+print("Top Attackers")
+print("-------------")
+
+for ip, count in sorted_ips:
     print(f"{ip} -> {count} attempts")
+
+# ---------------------
 
 print()
 
