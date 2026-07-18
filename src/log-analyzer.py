@@ -30,11 +30,8 @@ for line in log_data:
         else:
             ip_users[ip][user] = 1
 
-
 print(f"Failed login attempts: {failed_login_count}")
 print()
-
-# -------- NEW --------
 
 sorted_ips = sorted(
     ip_counts.items(),
@@ -48,14 +45,18 @@ print("-------------")
 for ip, count in sorted_ips:
     print(f"{ip} -> {count} attempts")
 
-# ---------------------
-
 print()
 
-print("Target Accounts")
-print("----------------")
+sorted_users = sorted(
+    user_counts.items(),
+    key=lambda item: item[1],
+    reverse=True
+)
 
-for user, count in user_counts.items():
+print("Top Target Accounts")
+print("-------------------")
+
+for user, count in sorted_users:
     print(f"{user} -> {count} attempts")
 
 print()
