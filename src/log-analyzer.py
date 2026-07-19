@@ -17,23 +17,13 @@ for line in log_data:
         ip = line.split("from ")[1].split(" ")[0]
         user = line.split("for ")[1].split("from ")[0].strip()
 
-        if ip in ip_counts:
-            ip_counts[ip] += 1
-        else:
-            ip_counts[ip] = 1
-
-        if user in user_counts:
-            user_counts[user] += 1
-        else:
-            user_counts[user] = 1
+        ip_counts[ip] = ip_counts.get(ip, 0) + 1
+        user_counts[user] = user_counts.get(user, 0) + 1
 
         if ip not in ip_users:
             ip_users[ip] = {}
 
-        if user in ip_users[ip]:
-            ip_users[ip][user] += 1
-        else:
-            ip_users[ip][user] = 1
+        ip_users[ip][user] = ip_users[ip].get(user, 0) + 1
 
     if "Accepted password" in line:
 
@@ -41,10 +31,7 @@ for line in log_data:
 
         user = line.split("for ")[1].split("from ")[0].strip()
 
-        if user in successful_users:
-            successful_users[user] += 1
-        else:
-            successful_users[user] = 1
+        successful_users[user] = successful_users.get(user, 0) + 1
 
 print("Authentication Summary")
 print("----------------------")
