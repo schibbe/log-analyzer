@@ -1,3 +1,20 @@
+def print_sorted_dictionary(data, title, label):
+
+    sorted_data = sorted(
+        data.items(),
+        key=lambda item: item[1],
+        reverse=True
+    )
+
+    print(title)
+    print("-" * len(title))
+
+    for key, count in sorted_data:
+        print(f"{key} -> {count} {label}")
+
+    print()
+
+
 log_data = open("data/auth.log", "r")
 
 failed_login_count = 0
@@ -40,41 +57,23 @@ print(f"Successful logins: {successful_login_count}")
 
 print()
 
-sorted_ips = sorted(
-    ip_counts.items(),
-    key=lambda item: item[1],
-    reverse=True
+print_sorted_dictionary(
+    ip_counts,
+    "Top Attackers",
+    "attempts"
 )
 
-print("Top Attackers")
-print("-------------")
-
-for ip, count in sorted_ips:
-    print(f"{ip} -> {count} attempts")
-
-print()
-
-sorted_users = sorted(
-    user_counts.items(),
-    key=lambda item: item[1],
-    reverse=True
+print_sorted_dictionary(
+    user_counts,
+    "Top Target Accounts",
+    "attempts"
 )
 
-print("Top Target Accounts")
-print("-------------------")
-
-for user, count in sorted_users:
-    print(f"{user} -> {count} attempts")
-
-print()
-
-print("Successful Users")
-print("----------------")
-
-for user, count in successful_users.items():
-    print(f"{user} -> {count} successful logins")
-
-print()
+print_sorted_dictionary(
+    successful_users,
+    "Successful Users",
+    "successful logins"
+)
 
 print("Attack Relationships")
 print("--------------------")
