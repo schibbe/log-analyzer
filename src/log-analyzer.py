@@ -30,8 +30,6 @@ def print_attack_relationships(ip_users):
         print()
 
 
-log_data = open("data/auth.log", "r")
-
 failed_login_count = 0
 successful_login_count = 0
 
@@ -40,30 +38,32 @@ user_counts = {}
 successful_users = {}
 ip_users = {}
 
-for line in log_data:
+with open("data/auth.log", "r") as log_data:
 
-    if "Failed password" in line:
+    for line in log_data:
 
-        failed_login_count += 1
+        if "Failed password" in line:
 
-        ip = line.split("from ")[1].split(" ")[0]
-        user = line.split("for ")[1].split("from ")[0].strip()
+            failed_login_count += 1
 
-        ip_counts[ip] = ip_counts.get(ip, 0) + 1
-        user_counts[user] = user_counts.get(user, 0) + 1
+            ip = line.split("from ")[1].split(" ")[0]
+            user = line.split("for ")[1].split("from ")[0].strip()
 
-        if ip not in ip_users:
-            ip_users[ip] = {}
+            ip_counts[ip] = ip_counts.get(ip, 0) + 1
+            user_counts[user] = user_counts.get(user, 0) + 1
 
-        ip_users[ip][user] = ip_users[ip].get(user, 0) + 1
+            if ip not in ip_users:
+                ip_users[ip] = {}
 
-    if "Accepted password" in line:
+            ip_users[ip][user] = ip_users[ip].get(user, 0) + 1
 
-        successful_login_count += 1
+        if "Accepted password" in line:
 
-        user = line.split("for ")[1].split("from ")[0].strip()
+            successful_login_count += 1
 
-        successful_users[user] = successful_users.get(user, 0) + 1
+            user = line.split("for ")[1].split("from ")[0].strip()
+
+            successful_users[user] = successful_users.get(user, 0) + 1
 
 print("Authentication Summary")
 print("----------------------")
@@ -91,5 +91,3 @@ print_sorted_dictionary(
 )
 
 print_attack_relationships(ip_users)
-
-log_data.close()
