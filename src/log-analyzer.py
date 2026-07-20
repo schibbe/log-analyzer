@@ -15,6 +15,21 @@ def print_sorted_dictionary(data, title, label):
     print()
 
 
+def print_attack_relationships(ip_users):
+
+    print("Attack Relationships")
+    print("--------------------")
+
+    for ip in ip_users:
+
+        print(ip)
+
+        for user, count in ip_users[ip].items():
+            print(f"  {user} -> {count} attempts")
+
+        print()
+
+
 log_data = open("data/auth.log", "r")
 
 failed_login_count = 0
@@ -75,16 +90,6 @@ print_sorted_dictionary(
     "successful logins"
 )
 
-print("Attack Relationships")
-print("--------------------")
-
-for ip in ip_users:
-
-    print(ip)
-
-    for user, count in ip_users[ip].items():
-        print(f"  {user} -> {count} attempts")
-
-    print()
+print_attack_relationships(ip_users)
 
 log_data.close()
