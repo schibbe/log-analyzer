@@ -30,6 +30,8 @@ def print_attack_relationships(ip_users):
         print()
 
 
+BRUTE_FORCE_THRESHOLD = 10
+
 failed_login_count = 0
 successful_login_count = 0
 
@@ -91,3 +93,11 @@ print_sorted_dictionary(
 )
 
 print_attack_relationships(ip_users)
+
+print("Potential Brute-Force Attacks")
+print("-----------------------------")
+
+for ip, count in ip_counts.items():
+
+    if count >= BRUTE_FORCE_THRESHOLD:
+        print(f"{ip} -> {count} failed login attempts")
