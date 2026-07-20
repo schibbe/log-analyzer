@@ -38,6 +38,7 @@ successful_login_count = 0
 ip_counts = {}
 user_counts = {}
 successful_users = {}
+successful_ips = {}
 ip_users = {}
 
 with open("data/auth.log", "r") as log_data:
@@ -63,9 +64,11 @@ with open("data/auth.log", "r") as log_data:
 
             successful_login_count += 1
 
+            ip = line.split("from ")[1].split(" ")[0]
             user = line.split("for ")[1].split("from ")[0].strip()
 
             successful_users[user] = successful_users.get(user, 0) + 1
+            successful_ips[ip] = successful_ips.get(ip, 0) + 1
 
 print("Authentication Summary")
 print("----------------------")
@@ -101,3 +104,17 @@ for ip, count in ip_counts.items():
 
     if count >= BRUTE_FORCE_THRESHOLD:
         print(f"{ip} -> {count} failed login attempts")
+
+print()
+
+print("Successful Brute-Force Candidates")
+print("---------------------------------")
+
+for ip in successful_ips:
+
+    if ip in ip_counts and ip_counts[ip] >= BRUTE_FORCE_THRESHOLD:
+        print(
+            f"{ip} -> "
+            f"{ip_counts[ip]} failed attempts, "
+            f"{successful_ips[ip]} successful login(s)"
+        )
