@@ -47,6 +47,16 @@ def get_severity(count):
     return None
 
 
+def parse_log_entry(line):
+
+    timestamp = line[:15]
+    hour = timestamp.split()[2].split(":")[0]
+    ip = line.split("from ")[1].split(" ")[0]
+    user = line.split("for ")[1].split("from ")[0].strip()
+
+    return timestamp, hour, user, ip
+
+
 BRUTE_FORCE_THRESHOLD = 10
 
 failed_login_count = 0
@@ -63,15 +73,11 @@ with open("data/auth.log", "r") as log_data:
 
     for line in log_data:
 
-        timestamp = line[:15]
-        hour = timestamp.split()[2].split(":")[0]
+        timestamp, hour, user, ip = parse_log_entry(line)
 
         if "Failed password" in line:
 
             failed_login_count += 1
-
-            ip = line.split("from ")[1].split(" ")[0]
-            user = line.split("for ")[1].split("from ")[0].strip()
 
             ip_counts[ip] = ip_counts.get(ip, 0) + 1
             user_counts[user] = user_counts.get(user, 0) + 1
@@ -85,9 +91,6 @@ with open("data/auth.log", "r") as log_data:
         if "Accepted password" in line:
 
             successful_login_count += 1
-
-            ip = line.split("from ")[1].split(" ")[0]
-            user = line.split("for ")[1].split("from ")[0].strip()
 
             successful_users[user] = successful_users.get(user, 0) + 1
             successful_ips[ip] = successful_ips.get(ip, 0) + 1
