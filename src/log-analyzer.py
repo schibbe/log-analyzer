@@ -32,16 +32,16 @@ def print_attack_relationships(ip_users):
 
 def get_severity(count):
 
-    if count >= 100:
+    if count >= CRITICAL_THRESHOLD:
         return "CRITICAL"
 
-    elif count >= 50:
+    elif count >= HIGH_THRESHOLD:
         return "HIGH"
 
-    elif count >= 25:
+    elif count >= MEDIUM_THRESHOLD:
         return "MEDIUM"
 
-    elif count >= BRUTE_FORCE_THRESHOLD:
+    elif count >= LOW_THRESHOLD:
         return "LOW"
 
     return None
@@ -58,6 +58,11 @@ def parse_log_entry(line):
 
 
 BRUTE_FORCE_THRESHOLD = 10
+
+LOW_THRESHOLD = 10
+MEDIUM_THRESHOLD = 25
+HIGH_THRESHOLD = 50
+CRITICAL_THRESHOLD = 100
 
 failed_login_count = 0
 successful_login_count = 0
