@@ -30,6 +30,23 @@ def print_attack_relationships(ip_users):
         print()
 
 
+def get_severity(count):
+
+    if count >= 100:
+        return "CRITICAL"
+
+    elif count >= 50:
+        return "HIGH"
+
+    elif count >= 25:
+        return "MEDIUM"
+
+    elif count >= BRUTE_FORCE_THRESHOLD:
+        return "LOW"
+
+    return None
+
+
 BRUTE_FORCE_THRESHOLD = 10
 
 failed_login_count = 0
@@ -107,19 +124,9 @@ print("-----------------------------")
 
 for ip, count in ip_counts.items():
 
-    if count >= 100:
-        severity = "CRITICAL"
+    severity = get_severity(count)
 
-    elif count >= 50:
-        severity = "HIGH"
-
-    elif count >= 25:
-        severity = "MEDIUM"
-
-    elif count >= BRUTE_FORCE_THRESHOLD:
-        severity = "LOW"
-
-    else:
+    if severity is None:
         continue
 
     print(f"[{severity}] {ip} -> {count} failed login attempts")
