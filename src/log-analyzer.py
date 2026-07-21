@@ -40,10 +40,14 @@ user_counts = {}
 successful_users = {}
 successful_ips = {}
 ip_users = {}
+hourly_attacks = {}
 
 with open("data/auth.log", "r") as log_data:
 
     for line in log_data:
+
+        timestamp = line[:15]
+        hour = timestamp.split()[2].split(":")[0]
 
         if "Failed password" in line:
 
@@ -54,6 +58,7 @@ with open("data/auth.log", "r") as log_data:
 
             ip_counts[ip] = ip_counts.get(ip, 0) + 1
             user_counts[user] = user_counts.get(user, 0) + 1
+            hourly_attacks[hour] = hourly_attacks.get(hour, 0) + 1
 
             if ip not in ip_users:
                 ip_users[ip] = {}
@@ -132,3 +137,13 @@ for ip in successful_ips:
             f"{ip_counts[ip]} failed attempts, "
             f"{successful_ips[ip]} successful login(s)"
         )
+
+print()
+
+print("Attack Activity by Hour")
+print("-----------------------")
+
+sorted_hours = sorted(hourly_attacks.items())
+
+for hour, count in sorted_hours:
+    print(f"{hour}:00 -> {count} failed login attempts")
