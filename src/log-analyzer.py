@@ -1,3 +1,9 @@
+def print_section_header(title):
+
+    print(title)
+    print("-" * len(title))
+
+
 def print_sorted_dictionary(data, title, label):
 
     sorted_data = sorted(
@@ -6,8 +12,7 @@ def print_sorted_dictionary(data, title, label):
         reverse=True
     )
 
-    print(title)
-    print("-" * len(title))
+    print_section_header(title)
 
     for key, count in sorted_data:
         print(f"{key} -> {count} {label}")
@@ -17,8 +22,7 @@ def print_sorted_dictionary(data, title, label):
 
 def print_attack_relationships(ip_users):
 
-    print("Attack Relationships")
-    print("--------------------")
+    print_section_header("Attack Relationships")
 
     for ip in ip_users:
 
@@ -32,8 +36,8 @@ def print_attack_relationships(ip_users):
 
 def print_authentication_summary(failed_login_count, successful_login_count):
 
-    print("Authentication Summary")
-    print("----------------------")
+    print_section_header("Authentication Summary")
+
     print(f"Failed login attempts: {failed_login_count}")
     print(f"Successful logins: {successful_login_count}")
     print()
@@ -134,8 +138,7 @@ print_sorted_dictionary(
 
 print_attack_relationships(ip_users)
 
-print("Potential Brute-Force Attacks")
-print("-----------------------------")
+print_section_header("Potential Brute-Force Attacks")
 
 for ip, count in ip_counts.items():
 
@@ -148,8 +151,7 @@ for ip, count in ip_counts.items():
 
 print()
 
-print("Successful Brute-Force Candidates")
-print("---------------------------------")
+print_section_header("Successful Brute-Force Candidates")
 
 for ip in successful_ips:
 
@@ -162,8 +164,7 @@ for ip in successful_ips:
 
 print()
 
-print("Attack Activity by Hour")
-print("-----------------------")
+print_section_header("Attack Activity by Hour")
 
 sorted_hours = sorted(hourly_attacks.items())
 
