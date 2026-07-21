@@ -30,6 +30,15 @@ def print_attack_relationships(ip_users):
         print()
 
 
+def print_authentication_summary(failed_login_count, successful_login_count):
+
+    print("Authentication Summary")
+    print("----------------------")
+    print(f"Failed login attempts: {failed_login_count}")
+    print(f"Successful logins: {successful_login_count}")
+    print()
+
+
 def get_severity(count):
 
     if count >= CRITICAL_THRESHOLD:
@@ -100,12 +109,10 @@ with open("data/auth.log", "r") as log_data:
             successful_users[user] = successful_users.get(user, 0) + 1
             successful_ips[ip] = successful_ips.get(ip, 0) + 1
 
-print("Authentication Summary")
-print("----------------------")
-print(f"Failed login attempts: {failed_login_count}")
-print(f"Successful logins: {successful_login_count}")
-
-print()
+print_authentication_summary(
+    failed_login_count,
+    successful_login_count
+)
 
 print_sorted_dictionary(
     ip_counts,
