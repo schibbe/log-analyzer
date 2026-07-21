@@ -102,8 +102,22 @@ print("-----------------------------")
 
 for ip, count in ip_counts.items():
 
-    if count >= BRUTE_FORCE_THRESHOLD:
-        print(f"{ip} -> {count} failed login attempts")
+    if count >= 100:
+        severity = "CRITICAL"
+
+    elif count >= 50:
+        severity = "HIGH"
+
+    elif count >= 25:
+        severity = "MEDIUM"
+
+    elif count >= BRUTE_FORCE_THRESHOLD:
+        severity = "LOW"
+
+    else:
+        continue
+
+    print(f"[{severity}] {ip} -> {count} failed login attempts")
 
 print()
 
