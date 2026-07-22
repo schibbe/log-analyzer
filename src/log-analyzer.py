@@ -51,6 +51,18 @@ def print_password_spraying_attacks(ip_users):
     print()
 
 
+
+def print_high_value_accounts(user_counts):
+
+    print_section_header("High-Value Account Targets")
+
+    for user, count in user_counts.items():
+
+        if user in HIGH_VALUE_ACCOUNTS:
+            print(f"{user} -> {count} failed login attempts")
+
+    print()
+
 def print_authentication_summary(failed_login_count, successful_login_count):
 
     print_section_header("Authentication Summary")
@@ -179,13 +191,8 @@ print()
 
 print_password_spraying_attacks(ip_users)
 
-print_section_header("High-Value Account Targets")
+print_high_value_accounts(user_counts)
 
-for user, count in user_counts.items():
-    if user in HIGH_VALUE_ACCOUNTS:
-        print(f"{user} -> {count} failed login attempts")
-
-print()
 
 print_section_header("Successful Brute-Force Candidates")
 
