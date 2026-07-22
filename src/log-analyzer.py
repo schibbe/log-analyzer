@@ -34,6 +34,23 @@ def print_attack_relationships(ip_users):
         print()
 
 
+def print_password_spraying_attacks(ip_users):
+
+    print_section_header("Potential Password Spraying Attacks")
+
+    for ip, users in ip_users.items():
+
+        attacked_users = len(users)
+
+        if attacked_users >= PASSWORD_SPRAY_THRESHOLD:
+            print(
+                f"{ip} -> "
+                f"{attacked_users} different user accounts targeted"
+            )
+
+    print()
+
+
 def print_authentication_summary(failed_login_count, successful_login_count):
 
     print_section_header("Authentication Summary")
@@ -152,19 +169,7 @@ for ip, count in ip_counts.items():
 
 print()
 
-print_section_header("Potential Password Spraying Attacks")
-
-for ip, users in ip_users.items():
-
-    attacked_users = len(users)
-
-    if attacked_users >= PASSWORD_SPRAY_THRESHOLD:
-        print(
-            f"{ip} -> "
-            f"{attacked_users} different user accounts targeted"
-        )
-
-print()
+print_password_spraying_attacks(ip_users)
 
 print_section_header("Successful Brute-Force Candidates")
 
