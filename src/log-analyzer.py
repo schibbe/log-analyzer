@@ -95,6 +95,14 @@ MEDIUM_THRESHOLD = 25
 HIGH_THRESHOLD = 50
 CRITICAL_THRESHOLD = 100
 
+HIGH_VALUE_ACCOUNTS = [
+    "root",
+    "admin",
+    "oracle",
+    "postgres",
+    "mysql"
+]
+
 failed_login_count = 0
 successful_login_count = 0
 
@@ -170,6 +178,14 @@ for ip, count in ip_counts.items():
 print()
 
 print_password_spraying_attacks(ip_users)
+
+print_section_header("High-Value Account Targets")
+
+for user, count in user_counts.items():
+    if user in HIGH_VALUE_ACCOUNTS:
+        print(f"{user} -> {count} failed login attempts")
+
+print()
 
 print_section_header("Successful Brute-Force Candidates")
 
