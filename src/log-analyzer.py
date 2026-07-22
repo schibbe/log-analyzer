@@ -72,6 +72,17 @@ def print_invalid_users(invalid_users):
         "attempts"
     )
 
+
+
+def print_successful_logins_after_failed_attempts(compromised_logins):
+
+    print_section_header("Successful Logins After Failed Attempts")
+
+    for ip, user in compromised_logins:
+        print(f"{ip} -> {user}")
+
+    print()
+
 def print_authentication_summary(failed_login_count, successful_login_count):
 
     print_section_header("Authentication Summary")
@@ -134,6 +145,8 @@ successful_ips = {}
 ip_users = {}
 hourly_attacks = {}
 invalid_users = {}
+failed_ips = {}
+compromised_logins = []
 
 with open("data/auth.log", "r") as log_data:
 
@@ -153,6 +166,7 @@ with open("data/auth.log", "r") as log_data:
                 ip_users[ip] = {}
 
             ip_users[ip][user] = ip_users[ip].get(user, 0) + 1
+            failed_ips[ip] = user
 
         if "Invalid user" in line:
 
@@ -168,6 +182,9 @@ with open("data/auth.log", "r") as log_data:
 
             successful_users[user] = successful_users.get(user, 0) + 1
             successful_ips[ip] = successful_ips.get(ip, 0) + 1
+
+            if ip in failed_ips:
+                compromised_logins.append((ip, user))
 
 print_authentication_summary(
     failed_login_count,
@@ -211,6 +228,7 @@ print_password_spraying_attacks(ip_users)
 
 print_high_value_accounts(user_counts)
 
+print_successful_logins_after_failed_attempts(compromised_logins)
 
 print_invalid_users(invalid_users)
 
