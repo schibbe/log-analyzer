@@ -63,6 +63,15 @@ def print_high_value_accounts(user_counts):
 
     print()
 
+
+def print_invalid_users(invalid_users):
+
+    print_sorted_dictionary(
+        invalid_users,
+        "Invalid User Attacks",
+        "attempts"
+    )
+
 def print_authentication_summary(failed_login_count, successful_login_count):
 
     print_section_header("Authentication Summary")
@@ -124,6 +133,7 @@ successful_users = {}
 successful_ips = {}
 ip_users = {}
 hourly_attacks = {}
+invalid_users = {}
 
 with open("data/auth.log", "r") as log_data:
 
@@ -143,6 +153,14 @@ with open("data/auth.log", "r") as log_data:
                 ip_users[ip] = {}
 
             ip_users[ip][user] = ip_users[ip].get(user, 0) + 1
+
+        if "Invalid user" in line:
+
+            invalid_user = line.split("Invalid user ")[1].split(" ")[0]
+
+            invalid_users[invalid_user] = (
+                invalid_users.get(invalid_user, 0) + 1
+            )
 
         if "Accepted password" in line:
 
@@ -193,6 +211,8 @@ print_password_spraying_attacks(ip_users)
 
 print_high_value_accounts(user_counts)
 
+
+print_invalid_users(invalid_users)
 
 print_section_header("Successful Brute-Force Candidates")
 
