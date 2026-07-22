@@ -83,6 +83,34 @@ def print_successful_logins_after_failed_attempts(compromised_logins):
 
     print()
 
+
+def print_top_attacker_report(ip_counts):
+
+    sorted_ips = sorted(
+        ip_counts.items(),
+        key=lambda item: item[1],
+        reverse=True
+    )
+
+    print_section_header("Top Attacker IP Report")
+
+    rank = 1
+
+    for ip, count in sorted_ips:
+
+        severity = get_severity(count)
+
+        if severity is None:
+            severity = "INFO"
+
+        print(f"{rank}. {ip}")
+        print(f"   Failed Attempts : {count}")
+        print(f"   Severity        : {severity}")
+        print()
+
+        rank += 1
+
+
 def print_authentication_summary(failed_login_count, successful_login_count):
 
     print_section_header("Authentication Summary")
@@ -191,11 +219,7 @@ print_authentication_summary(
     successful_login_count
 )
 
-print_sorted_dictionary(
-    ip_counts,
-    "Top Attackers",
-    "attempts"
-)
+print_top_attacker_report(ip_counts)
 
 print_sorted_dictionary(
     user_counts,
