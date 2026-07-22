@@ -71,6 +71,7 @@ def parse_log_entry(line):
 
 
 BRUTE_FORCE_THRESHOLD = 10
+PASSWORD_SPRAY_THRESHOLD = 5
 
 LOW_THRESHOLD = 10
 MEDIUM_THRESHOLD = 25
@@ -148,6 +149,20 @@ for ip, count in ip_counts.items():
         continue
 
     print(f"[{severity}] {ip} -> {count} failed login attempts")
+
+print()
+
+print_section_header("Potential Password Spraying Attacks")
+
+for ip, users in ip_users.items():
+
+    attacked_users = len(users)
+
+    if attacked_users >= PASSWORD_SPRAY_THRESHOLD:
+        print(
+            f"{ip} -> "
+            f"{attacked_users} different user accounts targeted"
+        )
 
 print()
 
