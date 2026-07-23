@@ -137,9 +137,7 @@ def print_target_account_report(user_counts):
 
 
 
-def print_attack_timeline(hourly_attacks)
-
-print_security_recommendations(compromised_logins, ip_counts):
+def print_attack_timeline(hourly_attacks):
 
     print_section_header("Attack Timeline")
 
@@ -186,6 +184,15 @@ def print_security_recommendations(compromised_logins, ip_counts):
     print("- Review SSH authentication logs regularly.")
     print()
 
+
+
+
+def print_analysis_footer():
+
+    print_section_header("Analysis Complete")
+    print("Log analysis finished successfully.")
+    print("Review the findings above for suspicious activity.")
+    print()
 
 def print_authentication_summary(failed_login_count, successful_login_count):
 
@@ -351,3 +358,5 @@ print()
 print_attack_timeline(hourly_attacks)
 
 print_security_recommendations(compromised_logins, ip_counts)
+
+print_analysis_footer()
