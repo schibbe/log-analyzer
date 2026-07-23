@@ -136,6 +136,22 @@ def print_target_account_report(user_counts):
         rank += 1
 
 
+
+def print_attack_timeline(hourly_attacks):
+
+    print_section_header("Attack Timeline")
+
+    sorted_hours = sorted(hourly_attacks.items())
+
+    for hour, count in sorted_hours:
+
+        bar = "#" * min(count, 50)
+
+        print(f"{hour}:00 | {bar} ({count})")
+
+    print()
+
+
 def print_authentication_summary(failed_login_count, successful_login_count):
 
     print_section_header("Authentication Summary")
@@ -290,9 +306,4 @@ for ip in successful_ips:
 
 print()
 
-print_section_header("Attack Activity by Hour")
-
-sorted_hours = sorted(hourly_attacks.items())
-
-for hour, count in sorted_hours:
-    print(f"{hour}:00 -> {count} failed login attempts")
+print_attack_timeline(hourly_attacks)
