@@ -137,7 +137,9 @@ def print_target_account_report(user_counts):
 
 
 
-def print_attack_timeline(hourly_attacks):
+def print_attack_timeline(hourly_attacks)
+
+print_security_recommendations(compromised_logins, ip_counts):
 
     print_section_header("Attack Timeline")
 
@@ -166,6 +168,22 @@ def print_incident_summary(
     print(f"Successful Logins    : {successful_login_count}")
     print(f"Unique Attacker IPs  : {len(ip_counts)}")
     print(f"Possible Compromises : {len(compromised_logins)}")
+    print()
+
+
+
+def print_security_recommendations(compromised_logins, ip_counts):
+
+    print_section_header("Security Recommendations")
+
+    if compromised_logins:
+        print("- Investigate successful logins after failed attempts.")
+        print("- Reset passwords for affected accounts.")
+
+    if any(count >= BRUTE_FORCE_THRESHOLD for count in ip_counts.values()):
+        print("- Block or rate-limit suspicious IP addresses.")
+
+    print("- Review SSH authentication logs regularly.")
     print()
 
 
@@ -331,3 +349,5 @@ for ip in successful_ips:
 print()
 
 print_attack_timeline(hourly_attacks)
+
+print_security_recommendations(compromised_logins, ip_counts)
