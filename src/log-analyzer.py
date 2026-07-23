@@ -111,6 +111,31 @@ def print_top_attacker_report(ip_counts):
         rank += 1
 
 
+
+def print_target_account_report(user_counts):
+
+    sorted_users = sorted(
+        user_counts.items(),
+        key=lambda item: item[1],
+        reverse=True
+    )
+
+    print_section_header("Target Account Report")
+
+    rank = 1
+
+    for user, count in sorted_users:
+
+        high_value = "Yes" if user in HIGH_VALUE_ACCOUNTS else "No"
+
+        print(f"{rank}. {user}")
+        print(f"   Failed Attempts : {count}")
+        print(f"   High Value      : {high_value}")
+        print()
+
+        rank += 1
+
+
 def print_authentication_summary(failed_login_count, successful_login_count):
 
     print_section_header("Authentication Summary")
@@ -221,11 +246,7 @@ print_authentication_summary(
 
 print_top_attacker_report(ip_counts)
 
-print_sorted_dictionary(
-    user_counts,
-    "Top Target Accounts",
-    "attempts"
-)
+print_target_account_report(user_counts)
 
 print_sorted_dictionary(
     successful_users,
