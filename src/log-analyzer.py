@@ -152,6 +152,23 @@ def print_attack_timeline(hourly_attacks):
     print()
 
 
+
+def print_incident_summary(
+    failed_login_count,
+    successful_login_count,
+    ip_counts,
+    compromised_logins
+):
+
+    print_section_header("Incident Summary")
+
+    print(f"Failed Login Attempts : {failed_login_count}")
+    print(f"Successful Logins    : {successful_login_count}")
+    print(f"Unique Attacker IPs  : {len(ip_counts)}")
+    print(f"Possible Compromises : {len(compromised_logins)}")
+    print()
+
+
 def print_authentication_summary(failed_login_count, successful_login_count):
 
     print_section_header("Authentication Summary")
@@ -254,6 +271,13 @@ with open("data/auth.log", "r") as log_data:
 
             if ip in failed_ips:
                 compromised_logins.append((ip, user))
+
+print_incident_summary(
+    failed_login_count,
+    successful_login_count,
+    ip_counts,
+    compromised_logins
+)
 
 print_authentication_summary(
     failed_login_count,
