@@ -282,7 +282,13 @@ compromised_logins = []
 
 def main():
 
-    with open(LOG_FILE, "r") as log_data:
+    try:
+        log_data = open(LOG_FILE, "r")
+    except FileNotFoundError:
+        print(f"Error: '{LOG_FILE}' was not found.")
+        return
+
+    with log_data:
 
         for line in log_data:
 
