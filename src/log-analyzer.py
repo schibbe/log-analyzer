@@ -153,7 +153,9 @@ def print_attack_timeline(hourly_attacks):
 
 
 
-def print_incident_summary(
+def print_program_information()
+
+print_incident_summary(
     failed_login_count,
     successful_login_count,
     ip_counts,
@@ -187,9 +189,7 @@ def print_security_recommendations(compromised_logins, ip_counts):
 
 
 
-def print_analysis_statistics()
-
-print_analysis_footer():
+def print_analysis_footer():
 
     print_section_header("Analysis Complete")
     print("Log analysis finished successfully.")
@@ -203,6 +203,16 @@ def print_analysis_statistics():
     print_section_header("Analysis Statistics")
     print("Reports Generated : 11")
     print("Detection Rules   : 5")
+    print()
+
+
+
+def print_program_information():
+
+    print_section_header("Program Information")
+    print("Application : Linux Authentication Log Analyzer")
+    print("Version     : 1.0")
+    print("Language    : Python")
     print()
 
 def print_authentication_summary(failed_login_count, successful_login_count):
