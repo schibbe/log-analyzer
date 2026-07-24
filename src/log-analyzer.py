@@ -205,20 +205,12 @@ def print_analysis_statistics():
 
 
 
-def print_program_information()
-print_report_separator():
+def print_program_information():
 
     print_section_header("Program Information")
     print("Application : Linux Authentication Log Analyzer")
     print("Version     : 1.0")
     print("Language    : Python")
-    print()
-
-
-
-def print_report_separator():
-
-    print("=" * 60)
     print()
 
 def print_authentication_summary(failed_login_count, successful_login_count):
@@ -286,104 +278,110 @@ invalid_users = {}
 failed_ips = {}
 compromised_logins = []
 
-with open("data/auth.log", "r") as log_data:
+def main():
 
-    for line in log_data:
+    with open("data/auth.log", "r") as log_data:
 
-        timestamp, hour, user, ip = parse_log_entry(line)
+        for line in log_data:
 
-        if "Failed password" in line:
+            timestamp, hour, user, ip = parse_log_entry(line)
 
-            failed_login_count += 1
+            if "Failed password" in line:
 
-            ip_counts[ip] = ip_counts.get(ip, 0) + 1
-            user_counts[user] = user_counts.get(user, 0) + 1
-            hourly_attacks[hour] = hourly_attacks.get(hour, 0) + 1
+                failed_login_count += 1
 
-            if ip not in ip_users:
-                ip_users[ip] = {}
+                ip_counts[ip] = ip_counts.get(ip, 0) + 1
+                user_counts[user] = user_counts.get(user, 0) + 1
+                hourly_attacks[hour] = hourly_attacks.get(hour, 0) + 1
 
-            ip_users[ip][user] = ip_users[ip].get(user, 0) + 1
-            failed_ips[ip] = user
+                if ip not in ip_users:
+                    ip_users[ip] = {}
 
-        if "Invalid user" in line:
+                ip_users[ip][user] = ip_users[ip].get(user, 0) + 1
+                failed_ips[ip] = user
 
-            invalid_user = line.split("Invalid user ")[1].split(" ")[0]
+            if "Invalid user" in line:
 
-            invalid_users[invalid_user] = (
-                invalid_users.get(invalid_user, 0) + 1
+                invalid_user = line.split("Invalid user ")[1].split(" ")[0]
+
+                invalid_users[invalid_user] = (
+                    invalid_users.get(invalid_user, 0) + 1
+                )
+
+            if "Accepted password" in line:
+
+                successful_login_count += 1
+
+                successful_users[user] = successful_users.get(user, 0) + 1
+                successful_ips[ip] = successful_ips.get(ip, 0) + 1
+
+                if ip in failed_ips:
+                    compromised_logins.append((ip, user))
+
+    print_incident_summary(
+        failed_login_count,
+        successful_login_count,
+        ip_counts,
+        compromised_logins
+    )
+
+    print_authentication_summary(
+        failed_login_count,
+        successful_login_count
+    )
+
+    print_top_attacker_report(ip_counts)
+
+    print_target_account_report(user_counts)
+
+    print_sorted_dictionary(
+        successful_users,
+        "Successful Users",
+        "successful logins"
+    )
+
+    print_attack_relationships(ip_users)
+
+    print_section_header("Potential Brute-Force Attacks")
+
+    for ip, count in ip_counts.items():
+
+        severity = get_severity(count)
+
+        if severity is None:
+            continue
+
+        print(f"[{severity}] {ip} -> {count} failed login attempts")
+
+    print()
+
+    print_password_spraying_attacks(ip_users)
+
+    print_high_value_accounts(user_counts)
+
+    print_successful_logins_after_failed_attempts(compromised_logins)
+
+    print_invalid_users(invalid_users)
+
+    print_section_header("Successful Brute-Force Candidates")
+
+    for ip in successful_ips:
+
+        if ip in ip_counts and ip_counts[ip] >= BRUTE_FORCE_THRESHOLD:
+            print(
+                f"{ip} -> "
+                f"{ip_counts[ip]} failed attempts, "
+                f"{successful_ips[ip]} successful login(s)"
             )
 
-        if "Accepted password" in line:
+    print()
 
-            successful_login_count += 1
+    print_attack_timeline(hourly_attacks)
 
-            successful_users[user] = successful_users.get(user, 0) + 1
-            successful_ips[ip] = successful_ips.get(ip, 0) + 1
+    print_security_recommendations(compromised_logins, ip_counts)
 
-            if ip in failed_ips:
-                compromised_logins.append((ip, user))
+    print_analysis_footer()
 
-print_incident_summary(
-    failed_login_count,
-    successful_login_count,
-    ip_counts,
-    compromised_logins
-)
 
-print_authentication_summary(
-    failed_login_count,
-    successful_login_count
-)
-
-print_top_attacker_report(ip_counts)
-
-print_target_account_report(user_counts)
-
-print_sorted_dictionary(
-    successful_users,
-    "Successful Users",
-    "successful logins"
-)
-
-print_attack_relationships(ip_users)
-
-print_section_header("Potential Brute-Force Attacks")
-
-for ip, count in ip_counts.items():
-
-    severity = get_severity(count)
-
-    if severity is None:
-        continue
-
-    print(f"[{severity}] {ip} -> {count} failed login attempts")
-
-print()
-
-print_password_spraying_attacks(ip_users)
-
-print_high_value_accounts(user_counts)
-
-print_successful_logins_after_failed_attempts(compromised_logins)
-
-print_invalid_users(invalid_users)
-
-print_section_header("Successful Brute-Force Candidates")
-
-for ip in successful_ips:
-
-    if ip in ip_counts and ip_counts[ip] >= BRUTE_FORCE_THRESHOLD:
-        print(
-            f"{ip} -> "
-            f"{ip_counts[ip]} failed attempts, "
-            f"{successful_ips[ip]} successful login(s)"
-        )
-
-print()
-
-print_attack_timeline(hourly_attacks)
-
-print_security_recommendations(compromised_logins, ip_counts)
-
-print_analysis_footer()
+if __name__ == "__main__":
+    main()
