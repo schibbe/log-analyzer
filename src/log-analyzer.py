@@ -187,11 +187,22 @@ def print_security_recommendations(compromised_logins, ip_counts):
 
 
 
-def print_analysis_footer():
+def print_analysis_statistics()
+
+print_analysis_footer():
 
     print_section_header("Analysis Complete")
     print("Log analysis finished successfully.")
     print("Review the findings above for suspicious activity.")
+    print()
+
+
+
+def print_analysis_statistics():
+
+    print_section_header("Analysis Statistics")
+    print("Reports Generated : 11")
+    print("Detection Rules   : 5")
     print()
 
 def print_authentication_summary(failed_login_count, successful_login_count):
