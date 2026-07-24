@@ -249,6 +249,8 @@ def parse_log_entry(line):
     return timestamp, hour, user, ip
 
 
+LOG_FILE = "data/auth.log"
+
 BRUTE_FORCE_THRESHOLD = 10
 PASSWORD_SPRAY_THRESHOLD = 5
 
@@ -280,7 +282,7 @@ compromised_logins = []
 
 def main():
 
-    with open("data/auth.log", "r") as log_data:
+    with open(LOG_FILE, "r") as log_data:
 
         for line in log_data:
 
