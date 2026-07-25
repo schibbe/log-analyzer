@@ -356,9 +356,9 @@ def main():
                 ip_users[ip][user] = ip_users[ip].get(user, 0) + 1
                 failed_ips[ip] = user
 
-            if "Invalid user" in line:
+            if "invalid user" in line:
 
-                invalid_user = line.split("Invalid user ")[1].split(" ")[0]
+                invalid_user = line.split("invalid user ")[1].split(" ")[0]
 
                 invalid_users[invalid_user] = (
                     invalid_users.get(invalid_user, 0) + 1
