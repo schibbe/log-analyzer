@@ -209,7 +209,7 @@ def print_program_information():
 
     print_section_header("Program Information")
     print("Application : Linux Authentication Log Analyzer")
-    print("Version     : 1.0")
+    print(f"Version     : {VERSION}")
     print("Language    : Python")
     print()
 
@@ -250,6 +250,7 @@ def parse_log_entry(line):
 
 
 LOG_FILE = "data/auth.log"
+VERSION = "1.0"
 
 BRUTE_FORCE_THRESHOLD = 10
 PASSWORD_SPRAY_THRESHOLD = 5
