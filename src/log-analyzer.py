@@ -243,8 +243,15 @@ def parse_log_entry(line):
 
     timestamp = line[:15]
     hour = timestamp.split()[2].split(":")[0]
-    ip = line.split("from ")[1].split(" ")[0]
-    user = line.split("for ")[1].split("from ")[0].strip()
+
+    ip = None
+    user = None
+
+    if "from " in line:
+        ip = line.split("from ")[1].split(" ")[0]
+
+    if "for " in line:
+        user = line.split("for ")[1].split("from ")[0].strip()
 
     return timestamp, hour, user, ip
 
