@@ -288,6 +288,34 @@ invalid_users = {}
 failed_ips = {}
 compromised_logins = []
 
+
+def print_reports(
+    failed_login_count,
+    successful_login_count,
+    ip_counts,
+    user_counts,
+    successful_users,
+    ip_users,
+    compromised_logins,
+    invalid_users,
+    successful_ips,
+    hourly_attacks
+):
+
+    print_reports(
+        failed_login_count,
+        successful_login_count,
+        ip_counts,
+        user_counts,
+        successful_users,
+        ip_users,
+        compromised_logins,
+        invalid_users,
+        successful_ips,
+        hourly_attacks
+    )
+
+
 def main():
 
     try:
