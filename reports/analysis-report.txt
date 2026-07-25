@@ -1,0 +1,305 @@
+Incident Summary
+----------------
+Failed Login Attempts : 169
+Successful Logins    : 81
+Unique Attacker IPs  : 19
+Possible Compromises : 4
+
+Authentication Summary
+----------------------
+Failed login attempts: 169
+Successful logins: 81
+
+Top Attacker IP Report
+----------------------
+1. 185.220.101.15
+   Failed Attempts : 50
+   Severity        : HIGH
+
+2. 91.218.114.31
+   Failed Attempts : 35
+   Severity        : MEDIUM
+
+3. 45.67.89.100
+   Failed Attempts : 12
+   Severity        : LOW
+
+4. 45.67.89.101
+   Failed Attempts : 12
+   Severity        : LOW
+
+5. 45.67.89.102
+   Failed Attempts : 11
+   Severity        : LOW
+
+6. 198.51.100.44
+   Failed Attempts : 8
+   Severity        : INFO
+
+7. 203.0.113.50
+   Failed Attempts : 6
+   Severity        : INFO
+
+8. 203.0.113.51
+   Failed Attempts : 6
+   Severity        : INFO
+
+9. 203.0.113.52
+   Failed Attempts : 6
+   Severity        : INFO
+
+10. 203.0.113.53
+   Failed Attempts : 6
+   Severity        : INFO
+
+11. 203.0.113.54
+   Failed Attempts : 6
+   Severity        : INFO
+
+12. 185.220.101.10
+   Failed Attempts : 4
+   Severity        : INFO
+
+13. 198.51.100.10
+   Failed Attempts : 1
+   Severity        : INFO
+
+14. 198.51.100.16
+   Failed Attempts : 1
+   Severity        : INFO
+
+15. 198.51.100.2
+   Failed Attempts : 1
+   Severity        : INFO
+
+16. 198.51.100.8
+   Failed Attempts : 1
+   Severity        : INFO
+
+17. 198.51.100.14
+   Failed Attempts : 1
+   Severity        : INFO
+
+18. 198.51.100.0
+   Failed Attempts : 1
+   Severity        : INFO
+
+19. 198.51.100.6
+   Failed Attempts : 1
+   Severity        : INFO
+
+Target Account Report
+---------------------
+1. root
+   Failed Attempts : 91
+   High Value      : Yes
+
+2. admin
+   Failed Attempts : 10
+   High Value      : Yes
+
+3. postgres
+   Failed Attempts : 9
+   High Value      : Yes
+
+4. oracle
+   Failed Attempts : 9
+   High Value      : Yes
+
+5. ubuntu
+   Failed Attempts : 7
+   High Value      : No
+
+6. simon
+   Failed Attempts : 7
+   High Value      : No
+
+7. backup
+   Failed Attempts : 6
+   High Value      : No
+
+8. invalid user guest
+   Failed Attempts : 3
+   High Value      : No
+
+9. invalid user test
+   Failed Attempts : 3
+   High Value      : No
+
+10. invalid user ftp
+   Failed Attempts : 3
+   High Value      : No
+
+11. invalid user git
+   Failed Attempts : 3
+   High Value      : No
+
+12. invalid user oracle1
+   Failed Attempts : 3
+   High Value      : No
+
+13. invalid user mysql
+   Failed Attempts : 3
+   High Value      : No
+
+14. invalid user postgres1
+   Failed Attempts : 3
+   High Value      : No
+
+15. invalid user nagios
+   Failed Attempts : 3
+   High Value      : No
+
+16. invalid user backup1
+   Failed Attempts : 3
+   High Value      : No
+
+17. invalid user dev
+   Failed Attempts : 3
+   High Value      : No
+
+Successful Users
+----------------
+simon -> 26 successful logins
+backup -> 18 successful logins
+ubuntu -> 17 successful logins
+root -> 9 successful logins
+admin -> 9 successful logins
+oracle -> 1 successful logins
+postgres -> 1 successful logins
+
+Attack Relationships
+--------------------
+185.220.101.15
+  root -> 50 attempts
+
+91.218.114.31
+  admin -> 5 attempts
+  backup -> 5 attempts
+  postgres -> 5 attempts
+  oracle -> 5 attempts
+  root -> 5 attempts
+  ubuntu -> 5 attempts
+  simon -> 5 attempts
+
+203.0.113.50
+  invalid user guest -> 3 attempts
+  invalid user mysql -> 3 attempts
+
+203.0.113.51
+  invalid user test -> 3 attempts
+  invalid user postgres1 -> 3 attempts
+
+203.0.113.52
+  invalid user ftp -> 3 attempts
+  invalid user nagios -> 3 attempts
+
+203.0.113.53
+  invalid user git -> 3 attempts
+  invalid user backup1 -> 3 attempts
+
+203.0.113.54
+  invalid user oracle1 -> 3 attempts
+  invalid user dev -> 3 attempts
+
+185.220.101.10
+  admin -> 4 attempts
+
+198.51.100.44
+  oracle -> 4 attempts
+  postgres -> 4 attempts
+
+45.67.89.100
+  root -> 12 attempts
+
+45.67.89.101
+  root -> 12 attempts
+
+45.67.89.102
+  root -> 11 attempts
+
+198.51.100.10
+  simon -> 1 attempts
+
+198.51.100.16
+  ubuntu -> 1 attempts
+
+198.51.100.2
+  backup -> 1 attempts
+
+198.51.100.8
+  admin -> 1 attempts
+
+198.51.100.14
+  root -> 1 attempts
+
+198.51.100.0
+  simon -> 1 attempts
+
+198.51.100.6
+  ubuntu -> 1 attempts
+
+Potential Brute-Force Attacks
+-----------------------------
+[HIGH] 185.220.101.15 -> 50 failed login attempts
+[MEDIUM] 91.218.114.31 -> 35 failed login attempts
+[LOW] 45.67.89.100 -> 12 failed login attempts
+[LOW] 45.67.89.101 -> 12 failed login attempts
+[LOW] 45.67.89.102 -> 11 failed login attempts
+
+Potential Password Spraying Attacks
+-----------------------------------
+91.218.114.31 -> 7 different user accounts targeted
+
+High-Value Account Targets
+--------------------------
+root -> 91 failed login attempts
+admin -> 10 failed login attempts
+postgres -> 9 failed login attempts
+oracle -> 9 failed login attempts
+
+Successful Logins After Failed Attempts
+---------------------------------------
+185.220.101.15 -> root
+185.220.101.10 -> admin
+198.51.100.44 -> oracle
+198.51.100.44 -> postgres
+
+Invalid User Attacks
+--------------------
+guest -> 3 attempts
+test -> 3 attempts
+ftp -> 3 attempts
+git -> 3 attempts
+oracle1 -> 3 attempts
+mysql -> 3 attempts
+postgres1 -> 3 attempts
+nagios -> 3 attempts
+backup1 -> 3 attempts
+dev -> 3 attempts
+
+Successful Brute-Force Candidates
+---------------------------------
+185.220.101.15 -> 50 failed attempts, 1 successful login(s)
+
+Attack Timeline
+---------------
+02:00 | ################################### (35)
+09:00 | ################################################## (50)
+11:00 | ################################### (35)
+12:00 | ############################## (30)
+13:00 | ############ (12)
+14:00 | ####### (7)
+
+Security Recommendations
+------------------------
+- Investigate successful logins after failed attempts.
+- Reset passwords for affected accounts.
+- Block or rate-limit suspicious IP addresses.
+- Review SSH authentication logs regularly.
+
+Analysis Complete
+-----------------
+Log analysis finished successfully.
+Review the findings above for suspicious activity.
+

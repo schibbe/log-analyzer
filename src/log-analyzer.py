@@ -1,3 +1,8 @@
+from contextlib import redirect_stdout
+from io import StringIO
+from pathlib import Path
+
+
 def print_section_header(title):
 
     print(title)
@@ -195,6 +200,14 @@ def print_analysis_footer():
     print()
 
 
+def save_report(report_output):
+
+    report_path = Path(REPORT_FILE)
+
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    report_path.write_text(report_output, encoding="utf-8")
+
+
 
 def print_analysis_statistics():
 
@@ -257,6 +270,7 @@ def parse_log_entry(line):
 
 
 LOG_FILE = "data/auth.log"
+REPORT_FILE = "reports/analysis-report.txt"
 VERSION = "1.0"
 
 BRUTE_FORCE_THRESHOLD = 10
@@ -301,78 +315,6 @@ def print_reports(
     successful_ips,
     hourly_attacks
 ):
-
-    print_reports(
-        failed_login_count,
-        successful_login_count,
-        ip_counts,
-        user_counts,
-        successful_users,
-        ip_users,
-        compromised_logins,
-        invalid_users,
-        successful_ips,
-        hourly_attacks
-    )
-
-
-def main():
-
-    global failed_login_count
-    global successful_login_count
-    global ip_counts
-    global user_counts
-    global successful_users
-    global successful_ips
-    global ip_users
-    global hourly_attacks
-    global invalid_users
-    global failed_ips
-    global compromised_logins
-
-    try:
-        log_data = open(LOG_FILE, "r")
-    except FileNotFoundError:
-        print(f"Error: '{LOG_FILE}' was not found.")
-        return
-
-    with log_data:
-
-        for line in log_data:
-
-            timestamp, hour, user, ip = parse_log_entry(line)
-
-            if "Failed password" in line:
-
-                failed_login_count += 1
-
-                ip_counts[ip] = ip_counts.get(ip, 0) + 1
-                user_counts[user] = user_counts.get(user, 0) + 1
-                hourly_attacks[hour] = hourly_attacks.get(hour, 0) + 1
-
-                if ip not in ip_users:
-                    ip_users[ip] = {}
-
-                ip_users[ip][user] = ip_users[ip].get(user, 0) + 1
-                failed_ips[ip] = user
-
-            if "invalid user" in line:
-
-                invalid_user = line.split("invalid user ")[1].split(" ")[0]
-
-                invalid_users[invalid_user] = (
-                    invalid_users.get(invalid_user, 0) + 1
-                )
-
-            if "Accepted password" in line:
-
-                successful_login_count += 1
-
-                successful_users[user] = successful_users.get(user, 0) + 1
-                successful_ips[ip] = successful_ips.get(ip, 0) + 1
-
-                if ip in failed_ips:
-                    compromised_logins.append((ip, user))
 
     print_incident_summary(
         failed_login_count,
@@ -437,6 +379,88 @@ def main():
     print_security_recommendations(compromised_logins, ip_counts)
 
     print_analysis_footer()
+
+
+def main():
+
+    global failed_login_count
+    global successful_login_count
+    global ip_counts
+    global user_counts
+    global successful_users
+    global successful_ips
+    global ip_users
+    global hourly_attacks
+    global invalid_users
+    global failed_ips
+    global compromised_logins
+
+    try:
+        log_data = open(LOG_FILE, "r")
+    except FileNotFoundError:
+        print(f"Error: '{LOG_FILE}' was not found.")
+        return
+
+    with log_data:
+
+        for line in log_data:
+
+            timestamp, hour, user, ip = parse_log_entry(line)
+
+            if "Failed password" in line:
+
+                failed_login_count += 1
+
+                ip_counts[ip] = ip_counts.get(ip, 0) + 1
+                user_counts[user] = user_counts.get(user, 0) + 1
+                hourly_attacks[hour] = hourly_attacks.get(hour, 0) + 1
+
+                if ip not in ip_users:
+                    ip_users[ip] = {}
+
+                ip_users[ip][user] = ip_users[ip].get(user, 0) + 1
+                failed_ips[ip] = user
+
+            if "invalid user" in line:
+
+                invalid_user = line.split("invalid user ")[1].split(" ")[0]
+
+                invalid_users[invalid_user] = (
+                    invalid_users.get(invalid_user, 0) + 1
+                )
+
+            if "Accepted password" in line:
+
+                successful_login_count += 1
+
+                successful_users[user] = successful_users.get(user, 0) + 1
+                successful_ips[ip] = successful_ips.get(ip, 0) + 1
+
+                if ip in failed_ips:
+                    compromised_logins.append((ip, user))
+
+    report_output = StringIO()
+
+    with redirect_stdout(report_output):
+        print_reports(
+            failed_login_count,
+            successful_login_count,
+            ip_counts,
+            user_counts,
+            successful_users,
+            ip_users,
+            compromised_logins,
+            invalid_users,
+            successful_ips,
+            hourly_attacks
+        )
+
+    report_text = report_output.getvalue()
+
+    print(report_text, end="")
+
+    save_report(report_text)
+    print(f"Report saved to: {REPORT_FILE}")
 
 
 if __name__ == "__main__":
