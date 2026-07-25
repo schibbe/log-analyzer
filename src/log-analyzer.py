@@ -318,6 +318,18 @@ def print_reports(
 
 def main():
 
+    global failed_login_count
+    global successful_login_count
+    global ip_counts
+    global user_counts
+    global successful_users
+    global successful_ips
+    global ip_users
+    global hourly_attacks
+    global invalid_users
+    global failed_ips
+    global compromised_logins
+
     try:
         log_data = open(LOG_FILE, "r")
     except FileNotFoundError:
