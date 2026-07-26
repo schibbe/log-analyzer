@@ -73,6 +73,34 @@ class LogAnalyzerTests(unittest.TestCase):
 
         self.assertEqual(log_file, "data/auth_simple.log")
 
+    def test_successful_login_after_failed_attempt(self):
+
+        failed_login_pairs = {
+            ("185.220.101.15", "root")
+        }
+
+        self.assertTrue(
+            log_analyzer.is_successful_login_after_failed_attempt(
+                "185.220.101.15",
+                "root",
+                failed_login_pairs
+            )
+        )
+        self.assertFalse(
+            log_analyzer.is_successful_login_after_failed_attempt(
+                "185.220.101.15",
+                "simon",
+                failed_login_pairs
+            )
+        )
+        self.assertFalse(
+            log_analyzer.is_successful_login_after_failed_attempt(
+                "198.51.100.44",
+                "root",
+                failed_login_pairs
+            )
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

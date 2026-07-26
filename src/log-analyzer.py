@@ -309,6 +309,11 @@ def parse_log_entry(line):
     return timestamp, hour, user, ip
 
 
+def is_successful_login_after_failed_attempt(ip, user, failed_login_pairs):
+
+    return (ip, user) in failed_login_pairs
+
+
 def get_log_file_path():
 
     parser = argparse.ArgumentParser(
@@ -358,7 +363,7 @@ successful_ips = {}
 ip_users = {}
 hourly_attacks = {}
 invalid_users = {}
-failed_ips = {}
+failed_login_pairs = set()
 compromised_logins = []
 
 
@@ -451,7 +456,7 @@ def main():
     global ip_users
     global hourly_attacks
     global invalid_users
-    global failed_ips
+    global failed_login_pairs
     global compromised_logins
 
     log_file = get_log_file_path()
@@ -480,7 +485,7 @@ def main():
                     ip_users[ip] = {}
 
                 ip_users[ip][user] = ip_users[ip].get(user, 0) + 1
-                failed_ips[ip] = user
+                failed_login_pairs.add((ip, user))
 
             if "invalid user" in line:
 
@@ -497,7 +502,11 @@ def main():
                 successful_users[user] = successful_users.get(user, 0) + 1
                 successful_ips[ip] = successful_ips.get(ip, 0) + 1
 
-                if ip in failed_ips:
+                if is_successful_login_after_failed_attempt(
+                    ip,
+                    user,
+                    failed_login_pairs
+                ):
                     compromised_logins.append((ip, user))
 
     report_output = StringIO()
