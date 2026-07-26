@@ -1,3 +1,4 @@
+import argparse
 import csv
 
 from contextlib import redirect_stdout
@@ -308,6 +309,24 @@ def parse_log_entry(line):
     return timestamp, hour, user, ip
 
 
+def get_log_file_path():
+
+    parser = argparse.ArgumentParser(
+        description="Analyze Linux authentication logs."
+    )
+
+    parser.add_argument(
+        "log_file",
+        nargs="?",
+        default=LOG_FILE,
+        help="Path to a Linux authentication log file."
+    )
+
+    arguments = parser.parse_args()
+
+    return arguments.log_file
+
+
 LOG_FILE = "data/auth.log"
 REPORT_FILE = "reports/analysis-report.txt"
 CSV_REPORT_FILE = "reports/top-attacker-report.csv"
@@ -435,10 +454,12 @@ def main():
     global failed_ips
     global compromised_logins
 
+    log_file = get_log_file_path()
+
     try:
-        log_data = open(LOG_FILE, "r")
+        log_data = open(log_file, "r")
     except FileNotFoundError:
-        print(f"Error: '{LOG_FILE}' was not found.")
+        print(f"Error: '{log_file}' was not found.")
         return
 
     with log_data:
