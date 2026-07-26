@@ -101,6 +101,15 @@ class LogAnalyzerTests(unittest.TestCase):
             )
         )
 
+    def test_html_table_row_escapes_content(self):
+
+        row = log_analyzer.create_html_table_row(["<script>alert(1)</script>"])
+
+        self.assertEqual(
+            row,
+            "<tr><td>&lt;script&gt;alert(1)&lt;/script&gt;</td></tr>"
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

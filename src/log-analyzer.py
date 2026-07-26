@@ -2,6 +2,7 @@ import argparse
 import csv
 
 from contextlib import redirect_stdout
+from html import escape
 from io import StringIO
 from pathlib import Path
 
@@ -248,6 +249,98 @@ def save_top_attacker_report(ip_counts):
             ])
 
 
+def create_html_table_row(values):
+
+    cells = "".join(
+        f"<td>{escape(str(value))}</td>"
+        for value in values
+    )
+
+    return f"<tr>{cells}</tr>"
+
+
+def save_html_report(
+    failed_login_count,
+    successful_login_count,
+    ip_counts,
+    compromised_logins
+):
+
+    report_path = Path(HTML_REPORT_FILE)
+    attacker_rows = []
+
+    for rank, (ip, count) in enumerate(get_sorted_ip_counts(ip_counts), 1):
+        attacker_rows.append(
+            create_html_table_row([
+                rank,
+                ip,
+                count,
+                get_severity_label(count)
+            ])
+        )
+
+    compromised_rows = [
+        create_html_table_row([ip, user])
+        for ip, user in compromised_logins
+    ]
+
+    if not compromised_rows:
+        compromised_rows.append(
+            '<tr><td colspan="2">No matching login pairs found.</td></tr>'
+        )
+
+    report_content = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linux Authentication Log Analysis</title>
+    <style>
+        body {{ background: #f4f7fb; color: #1f2937; font-family: Arial, sans-serif; margin: 0; }}
+        main {{ margin: 0 auto; max-width: 1100px; padding: 40px 24px; }}
+        h1 {{ margin-bottom: 8px; }}
+        .summary {{ display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin: 28px 0; }}
+        .card, section {{ background: white; border-radius: 8px; box-shadow: 0 2px 8px #dbe3ee; padding: 20px; }}
+        .card p {{ font-size: 28px; font-weight: bold; margin: 8px 0 0; }}
+        section {{ margin-top: 24px; }}
+        table {{ border-collapse: collapse; width: 100%; }}
+        th, td {{ border-bottom: 1px solid #e5e7eb; padding: 12px; text-align: left; }}
+        th {{ background: #eff6ff; }}
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Linux Authentication Log Analysis</h1>
+        <p>Security findings generated from the selected authentication log.</p>
+        <div class="summary">
+            <div class="card"><strong>Failed Logins</strong><p>{failed_login_count}</p></div>
+            <div class="card"><strong>Successful Logins</strong><p>{successful_login_count}</p></div>
+            <div class="card"><strong>Unique Attacker IPs</strong><p>{len(ip_counts)}</p></div>
+            <div class="card"><strong>Possible Compromises</strong><p>{len(compromised_logins)}</p></div>
+        </div>
+        <section>
+            <h2>Top Attacker IPs</h2>
+            <table>
+                <tr><th>Rank</th><th>IP Address</th><th>Failed Attempts</th><th>Severity</th></tr>
+                {''.join(attacker_rows)}
+            </table>
+        </section>
+        <section>
+            <h2>Successful Logins After Failed Attempts</h2>
+            <table>
+                <tr><th>IP Address</th><th>User</th></tr>
+                {''.join(compromised_rows)}
+            </table>
+        </section>
+    </main>
+</body>
+</html>
+"""
+
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    report_path.write_text(report_content, encoding="utf-8")
+
+
 
 def print_analysis_statistics():
 
@@ -335,6 +428,7 @@ def get_log_file_path():
 LOG_FILE = "data/auth.log"
 REPORT_FILE = "reports/analysis-report.txt"
 CSV_REPORT_FILE = "reports/top-attacker-report.csv"
+HTML_REPORT_FILE = "reports/analysis-report.html"
 VERSION = "1.0"
 
 BRUTE_FORCE_THRESHOLD = 10
@@ -534,6 +628,14 @@ def main():
 
     save_top_attacker_report(ip_counts)
     print(f"CSV report saved to: {CSV_REPORT_FILE}")
+
+    save_html_report(
+        failed_login_count,
+        successful_login_count,
+        ip_counts,
+        compromised_logins
+    )
+    print(f"HTML report saved to: {HTML_REPORT_FILE}")
 
 
 if __name__ == "__main__":

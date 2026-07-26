@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linux Authentication Log Analysis</title>
+    <style>
+        body { background: #f4f7fb; color: #1f2937; font-family: Arial, sans-serif; margin: 0; }
+        main { margin: 0 auto; max-width: 1100px; padding: 40px 24px; }
+        h1 { margin-bottom: 8px; }
+        .summary { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin: 28px 0; }
+        .card, section { background: white; border-radius: 8px; box-shadow: 0 2px 8px #dbe3ee; padding: 20px; }
+        .card p { font-size: 28px; font-weight: bold; margin: 8px 0 0; }
+        section { margin-top: 24px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border-bottom: 1px solid #e5e7eb; padding: 12px; text-align: left; }
+        th { background: #eff6ff; }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Linux Authentication Log Analysis</h1>
+        <p>Security findings generated from the selected authentication log.</p>
+        <div class="summary">
+            <div class="card"><strong>Failed Logins</strong><p>169</p></div>
+            <div class="card"><strong>Successful Logins</strong><p>81</p></div>
+            <div class="card"><strong>Unique Attacker IPs</strong><p>19</p></div>
+            <div class="card"><strong>Possible Compromises</strong><p>4</p></div>
+        </div>
+        <section>
+            <h2>Top Attacker IPs</h2>
+            <table>
+                <tr><th>Rank</th><th>IP Address</th><th>Failed Attempts</th><th>Severity</th></tr>
+                <tr><td>1</td><td>185.220.101.15</td><td>50</td><td>HIGH</td></tr><tr><td>2</td><td>91.218.114.31</td><td>35</td><td>MEDIUM</td></tr><tr><td>3</td><td>45.67.89.100</td><td>12</td><td>LOW</td></tr><tr><td>4</td><td>45.67.89.101</td><td>12</td><td>LOW</td></tr><tr><td>5</td><td>45.67.89.102</td><td>11</td><td>LOW</td></tr><tr><td>6</td><td>198.51.100.44</td><td>8</td><td>INFO</td></tr><tr><td>7</td><td>203.0.113.50</td><td>6</td><td>INFO</td></tr><tr><td>8</td><td>203.0.113.51</td><td>6</td><td>INFO</td></tr><tr><td>9</td><td>203.0.113.52</td><td>6</td><td>INFO</td></tr><tr><td>10</td><td>203.0.113.53</td><td>6</td><td>INFO</td></tr><tr><td>11</td><td>203.0.113.54</td><td>6</td><td>INFO</td></tr><tr><td>12</td><td>185.220.101.10</td><td>4</td><td>INFO</td></tr><tr><td>13</td><td>198.51.100.10</td><td>1</td><td>INFO</td></tr><tr><td>14</td><td>198.51.100.16</td><td>1</td><td>INFO</td></tr><tr><td>15</td><td>198.51.100.2</td><td>1</td><td>INFO</td></tr><tr><td>16</td><td>198.51.100.8</td><td>1</td><td>INFO</td></tr><tr><td>17</td><td>198.51.100.14</td><td>1</td><td>INFO</td></tr><tr><td>18</td><td>198.51.100.0</td><td>1</td><td>INFO</td></tr><tr><td>19</td><td>198.51.100.6</td><td>1</td><td>INFO</td></tr>
+            </table>
+        </section>
+        <section>
+            <h2>Successful Logins After Failed Attempts</h2>
+            <table>
+                <tr><th>IP Address</th><th>User</th></tr>
+                <tr><td>185.220.101.15</td><td>root</td></tr><tr><td>185.220.101.10</td><td>admin</td></tr><tr><td>198.51.100.44</td><td>oracle</td></tr><tr><td>198.51.100.44</td><td>postgres</td></tr>
+            </table>
+        </section>
+    </main>
+</body>
+</html>
