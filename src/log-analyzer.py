@@ -1,3 +1,5 @@
+import csv
+
 from contextlib import redirect_stdout
 from io import StringIO
 from pathlib import Path
@@ -89,13 +91,28 @@ def print_successful_logins_after_failed_attempts(compromised_logins):
     print()
 
 
-def print_top_attacker_report(ip_counts):
+def get_sorted_ip_counts(ip_counts):
 
-    sorted_ips = sorted(
+    return sorted(
         ip_counts.items(),
         key=lambda item: item[1],
         reverse=True
     )
+
+
+def get_severity_label(count):
+
+    severity = get_severity(count)
+
+    if severity is None:
+        return "INFO"
+
+    return severity
+
+
+def print_top_attacker_report(ip_counts):
+
+    sorted_ips = get_sorted_ip_counts(ip_counts)
 
     print_section_header("Top Attacker IP Report")
 
@@ -103,10 +120,7 @@ def print_top_attacker_report(ip_counts):
 
     for ip, count in sorted_ips:
 
-        severity = get_severity(count)
-
-        if severity is None:
-            severity = "INFO"
+        severity = get_severity_label(count)
 
         print(f"{rank}. {ip}")
         print(f"   Failed Attempts : {count}")
@@ -208,6 +222,31 @@ def save_report(report_output):
     report_path.write_text(report_output, encoding="utf-8")
 
 
+def save_top_attacker_report(ip_counts):
+
+    report_path = Path(CSV_REPORT_FILE)
+
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+
+    with report_path.open("w", newline="", encoding="utf-8") as report_file:
+        report_writer = csv.writer(report_file)
+
+        report_writer.writerow([
+            "Rank",
+            "IP Address",
+            "Failed Attempts",
+            "Severity"
+        ])
+
+        for rank, (ip, count) in enumerate(get_sorted_ip_counts(ip_counts), 1):
+            report_writer.writerow([
+                rank,
+                ip,
+                count,
+                get_severity_label(count)
+            ])
+
+
 
 def print_analysis_statistics():
 
@@ -271,6 +310,7 @@ def parse_log_entry(line):
 
 LOG_FILE = "data/auth.log"
 REPORT_FILE = "reports/analysis-report.txt"
+CSV_REPORT_FILE = "reports/top-attacker-report.csv"
 VERSION = "1.0"
 
 BRUTE_FORCE_THRESHOLD = 10
@@ -461,6 +501,9 @@ def main():
 
     save_report(report_text)
     print(f"Report saved to: {REPORT_FILE}")
+
+    save_top_attacker_report(ip_counts)
+    print(f"CSV report saved to: {CSV_REPORT_FILE}")
 
 
 if __name__ == "__main__":
